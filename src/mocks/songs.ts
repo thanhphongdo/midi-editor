@@ -1,0 +1,111 @@
+import { Song, TrackTitle } from "../definitions";
+
+export const Songs: Song[] = [
+  {
+    id: '2a1ecff6-f3bd-49cb-b65b-b6fb80ad3f5a',
+    name: "Rock Beat 120 BPM",
+    description: "Simple rock drum pattern",
+    totalDuration: 30,
+    trackLabels: [
+      TrackTitle.Kick,
+      TrackTitle.Snare,
+      TrackTitle.HiHat,
+      TrackTitle.Crash,
+      TrackTitle.Ride,
+      TrackTitle.Tom1,
+      TrackTitle.Tom2,
+      TrackTitle.Tambourine,
+    ],
+    notes: [
+      {
+        track: 1,
+        time: 0,
+        title: TrackTitle.Kick,
+        description: "Main kick drum hit",
+        color: "#EF4444",
+      },
+      {
+        track: 2,
+        time: 1,
+        title: TrackTitle.Snare,
+        description: "Backbeat snare",
+        color: "#3B82F6",
+      },
+      {
+        track: 1,
+        time: 2,
+        title: TrackTitle.Kick,
+        description: "Follow-up kick",
+        color: "#EF4444",
+      },
+      {
+        track: 3,
+        time: 0.5,
+        title: TrackTitle.HiHat,
+        description: "Closed hi-hat",
+        color: "#10B981",
+      },
+      {
+        track: 3,
+        time: 5,
+        title: TrackTitle.HiHat,
+        description: "Closed hi-hat",
+        color: "#10B981",
+      },
+      {
+        track: 3,
+        time: 10,
+        title: TrackTitle.HiHat,
+        description: "Closed hi-hat",
+        color: "#10B981",
+      },
+      {
+        track: 3,
+        time: 15,
+        title: TrackTitle.HiHat,
+        description: "Closed hi-hat",
+        color: "#10B981",
+      },
+      {
+        track: 3,
+        time: 20,
+        title: TrackTitle.HiHat,
+        description: "Closed hi-hat",
+        color: "#10B981",
+      }
+    ],
+  },
+  {
+    id: '5a8c51c3-8187-430a-9149-0b98bb10fb64',
+    name: "Electronic Groove",
+    description: "Synth bassline with drums",
+    totalDuration: 180,
+    trackLabels: [
+      TrackTitle.LeadSynth,
+      TrackTitle.Bass,
+      TrackTitle.Kick,
+      TrackTitle.Snare,
+      TrackTitle.HiHat,
+      TrackTitle.Pad,
+      TrackTitle.Arp,
+      TrackTitle.FX,
+    ],
+    notes: [
+      { track: 3, time: 0, title: TrackTitle.Kick, color: "#EF4444" },
+      {
+        track: 2,
+        time: 0.5,
+        title: TrackTitle.Bass,
+        description: "Root note",
+        color: "#8B5CF6",
+      },
+      {
+        track: 1,
+        time: 2,
+        title: TrackTitle.LeadSynth,
+        description: "Melody line",
+        color: "#06B6D4",
+      },
+    ],
+  },
+];
