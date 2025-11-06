@@ -21,6 +21,18 @@ export function Actions(props: { id: string }) {
         resetSong();
     }
 
+    const handleExport = () => {
+        const data = JSON.stringify(song, null, 4);
+        const blob = new Blob([data], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${song.name || song.id}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    };
+
+
     return <>
         <div className="grid grid-cols-3 gap-2">
             <div className="hidden lg:block"></div>
@@ -50,7 +62,7 @@ export function Actions(props: { id: string }) {
                     <IconList className="lg:hidden inline-block" />
                     <span className="hidden lg:inline-block">Note List</span>
                 </Button>
-                <Button size={'xs'} color={'green'} onClick={handleSave}>
+                <Button size={'xs'} color={'green'} onClick={handleExport}>
                     <IconList className="lg:hidden inline-block" />
                     <span className="hidden lg:inline-block">Export</span>
                 </Button>

@@ -8,6 +8,7 @@ export interface MidiEditorListStore extends MidiEditor {
   updateSong: (name: string, song: Partial<Song>) => void;
   addSong: (song: Song) => void;
   removeSong: (name: string) => void;
+  overwriteSong: (song: Song) => void;
 }
 
 export const useMidiEditorStore = create<MidiEditorListStore>()(
@@ -34,6 +35,15 @@ export const useMidiEditorStore = create<MidiEditorListStore>()(
           ...state,
           songs: state.songs.filter((s) => s.id !== id),
         }));
+      },
+      overwriteSong: (song: Song) => {
+        set((state) => {
+          const index = state.songs.findIndex((s) => s.id === song.id);
+          if (index === -1) return state;
+          const updatedSongs = [...state.songs];
+          updatedSongs[index] = song;
+          return { ...state, songs: updatedSongs };
+        });
       },
     }),
     {
