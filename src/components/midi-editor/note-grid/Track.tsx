@@ -1,35 +1,101 @@
 import { Note } from "./Note";
 import { Note as NoteProps, TrackTitle } from "../../../definitions";
 import { useMidiEditorContext } from "../providers/MidiEditorProvider.Context";
+import { IconPlus, IconX } from "@tabler/icons-react";
+import { memo, useState } from "react";
+import { Button, Group, Modal, Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
-export function Track(props: {
+function TrackEle(props: {
     track: number;
     title: TrackTitle;
     notes: Array<NoteProps>;
+    isAdding?: boolean;
 }) {
-    const { gridOptions, getTrackColor } = useMidiEditorContext();
+    const { gridOptions, getTrackColor, openAddNewTrackModal, updateSong, song } = useMidiEditorContext();
 
-    const hintNotes = Array.from({
-        length: gridOptions.maxDuration * 2
-    }, (_, i) => ({
-        time: i / 2
-    }));
+    const [titleHover, setTitleHover] = useState(false);
+    const [hintTime, setHintTime] = useState<number | null>(null);
+    const [opened, { open, close }] = useDisclosure();
 
-    return <div>
-        <div className="h-8 flex items-end justify-center sticky top-0 bg-dark-1000 !text-white z-[15] font-bold">
-            {props.title}
+    const handleAddNewTrack = () => {
+        if (!props.isAdding) return;
+        openAddNewTrackModal();
+    }
+
+    const handleRemoveTrack = () => {
+        close();
+        const newTrackLabels = song.trackLabels.filter((_, idx) => (idx + 1) !== props.track);
+        const newNotes = song.notes
+            .filter(note => note.track !== props.track)
+            .map(note => {
+                if (note.track > props.track) {
+                    return { ...note, track: note.track - 1 };
+                }
+                return note;
+            });
+
+        const newSong = {
+            ...song,
+            trackLabels: newTrackLabels,
+            notes: newNotes,
+        };
+
+        updateSong(newSong);
+    }
+
+    return <>
+        <div>
+            <div className="h-8 flex items-end justify-center sticky top-0 bg-dark-1000 !text-white z-[15] font-bold cursor-pointer"
+                onClick={handleAddNewTrack}
+                onMouseEnter={() => { setTitleHover(true) }}
+                onMouseLeave={() => { setTitleHover(false) }}>
+                {props.isAdding && <IconPlus size={16} className="mb-1 mr-1" />} {props.title}
+                {!props.isAdding && titleHover && <div className="absolute top-3 right-1 p-[2px] bg-red-500/60 hover:bg-red-500 rounded-full"
+                    onClick={(e) => { e.stopPropagation(); open() }}>
+                    <IconX size={12} />
+                </div>}
+            </div>
+            <div className="flex justify-center relative mt-4" style={{
+                width: gridOptions.trackWidth,
+                height: (gridOptions.maxDuration + gridOptions.interval) * gridOptions.timeScalePer1s,
+                background: getTrackColor(props.title, 0.1)
+            }} onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                if (e.clientX - rect.left < (gridOptions.trackWidth / 2) - 8 ||
+                    e.clientX - rect.left > (gridOptions.trackWidth / 2) + 8) {
+                    setHintTime(null);
+                    return;
+                }
+                setHintTime(Math.ceil((e.clientY - rect.top) * 2 / gridOptions.timeScalePer1s) / 2);
+            }}
+                onMouseLeave={() => {
+                    setHintTime(null)
+                }}>
+                <div className="h-full border-l-2"
+                    style={{
+                        borderColor: getTrackColor(props.title, 0.3)
+                    }}></div>
+                {!props.isAdding && <>
+                    {hintTime !== null && hintTime <= gridOptions.maxDuration && <Note time={hintTime} title={props.title} track={props.track} isHint />}
+                    {props.notes.map(note => <Note key={note.time} {...note} />)}
+                </>}
+
+            </div>
         </div>
-        <div className="flex justify-center relative mt-4" style={{
-            width: gridOptions.trackWidth,
-            height: (gridOptions.maxDuration + gridOptions.interval) * gridOptions.timeScalePer1s,
-            background: getTrackColor(props.title, 0.1)
-        }}>
-            <div className="h-full border-l-2"
-                style={{
-                    borderColor: getTrackColor(props.title, 0.3)
-                }}></div>
-            {hintNotes.map(note => <Note key={note.time} time={note.time} title={props.title} track={props.track} isHint />)}
-            {props.notes.map(note => <Note key={note.time} {...note} />)}
-        </div>
-    </div>
+        <Modal opened={opened} onClose={close}
+            title={<Title order={4}>Remove Track</Title>}>
+            Are you sure you want to remove this track?
+            <Group mt="lg" justify="flex-end">
+                <Button onClick={handleRemoveTrack} color="blue">
+                    Confirm
+                </Button>
+                <Button onClick={close} color="red">
+                    Close
+                </Button>
+            </Group>
+        </Modal>
+    </>
 }
+
+export const Track = memo(TrackEle);

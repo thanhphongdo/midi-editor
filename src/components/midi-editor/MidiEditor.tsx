@@ -11,11 +11,12 @@ export function MidiEditor(props: Song) {
                 <div className="flex-1">
                     <SongTitle />
                 </div>
-                <Actions id={props.id} />
             </div>
             <div className="flex-1 w-full h-[calc(100%_-_3.25rem)]">
                 <NoteGrid />
             </div>
+
+            <Actions id={props.id} />
         </div>
     </MidiEditorProvider>
 }

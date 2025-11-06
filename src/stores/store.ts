@@ -27,7 +27,6 @@ export const useMidiEditorStore = create<MidiEditorListStore>()(
         return get().songs.find((song) => song.id === id);
       },
       getDraftSongById: (id: string) => {
-        console.log(get())
         return get().draftSongs?.find((song) => song.id === id);
       },
       updateSong: (id: string, song: Partial<Song>) => {

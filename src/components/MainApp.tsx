@@ -3,9 +3,6 @@ import { useMidiEditorStore } from "../stores/store";
 
 export function MainApp() {
   const { songs } = useMidiEditorStore();
-  useEffect(() => {
-    console.log(songs);
-  }, [])
   return (
     <div className="w-full flex flex-col items-center">
       <div className="w-full lg:w-2/3 xl:w-1/3">

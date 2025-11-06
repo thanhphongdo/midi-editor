@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { useMidiEditorContext } from "../providers/MidiEditorProvider.Context";
 
-export function YAxis() {
+function YAxisEle() {
     const { gridOptions } = useMidiEditorContext();
     const sticks = Array.from({ length: (gridOptions.maxDuration / gridOptions.interval) }, (_, i) => ({
         time: (i + 1) * gridOptions.interval,
@@ -29,3 +30,5 @@ export function YAxis() {
         }}></div>
     </div>
 }
+
+export const YAxis = memo(YAxisEle);
