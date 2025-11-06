@@ -29,11 +29,13 @@ export function Layout({ children }: PropsWithChildren) {
                 MIDI Editor
               </Text>
             </div>
+            <div className="absolute right-4 top-0">
+              <SwitchTheme />
+            </div>
           </div>
         </Group>
       </AppShell.Header>
       <AppShell.Main>{children}</AppShell.Main>
-      <SwitchTheme />
       <Drawer opened={opened} onClose={close} title="Implement later">
         {/* Drawer content */}
       </Drawer>

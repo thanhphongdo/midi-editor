@@ -1,31 +1,17 @@
-import { useState } from "react";
 import { Track } from "./Track";
+import { useMidiEditorContext } from "../providers/MidiEditorProvider.Context";
 
 export function Tracks() {
-    const [gridOptions, setGridOptions] = useState({
-        trackWidth: 120,
-        timeScalePer1s: 24
-    });
-    const interval = 5;
-    const maxDuration = 300;
+    const { gridOptions, song } = useMidiEditorContext();
+
     return <div className="flex-1">
-        <div className="flex" style={{height: (maxDuration + interval) * gridOptions.timeScalePer1s }}>
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
-            <Track />
+        <div className="flex gap-2 md:gap-4" style={{ height: (gridOptions.maxDuration + gridOptions.interval) * gridOptions.timeScalePer1s }}>
+            {song.trackLabels.map((label, index) => <Track
+                key={label}
+                track={index + 1}
+                title={label}
+                notes={song.notes.filter(note => note.track === (index + 1))}
+            />)}
         </div>
     </div>
 }

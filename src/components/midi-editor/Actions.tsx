@@ -2,14 +2,14 @@ import { Button, Group, Modal, Title } from "@mantine/core";
 import { IconCancel, IconDeviceFloppy, IconPencil } from "@tabler/icons-react";
 import { useMidiEditorStore } from "../../stores/store";
 import { useDisclosure } from "@mantine/hooks";
+import { useMidiEditorContext } from "./providers/MidiEditorProvider.Context";
 
 export function Actions(props: { id: string }) {
-    const { isEditing, getSongById, getDraftSongById, updateSong, addDraftSong, removeDraftSong, setIsEditing } = useMidiEditorStore();
+    const { getSongById, getDraftSongById, updateSong, addDraftSong, removeDraftSong } = useMidiEditorStore();
+    const { isEditing, setIsEditing } = useMidiEditorContext();
     const [opened, { open, close }] = useDisclosure(false);
 
     const handleEdit = () => {
-        console.log(props.id)
-        console.log(getDraftSongById(props.id))
         if (getDraftSongById(props.id)) {
             open();
             return;

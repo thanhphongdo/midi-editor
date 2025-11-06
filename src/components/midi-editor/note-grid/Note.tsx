@@ -1,27 +1,47 @@
 import { useState } from "react";
 import { Note as NoteProps } from "../../../definitions";
+import { useMidiEditorContext } from "../providers/MidiEditorProvider.Context";
+import { Popover, Tooltip } from "@mantine/core";
 
 export function Note(props: Partial<NoteProps> & { isHint?: boolean }) {
-    const [gridOptions, setGridOptions] = useState({
-        trackWidth: 120,
-        timeScalePer1s: 24
-    });
-    const interval = 5;
-    const maxDuration = 300;
-
+    const { gridOptions, getTrackColor, updateSong, song, isEditing } = useMidiEditorContext();
     const [focused, setFocused] = useState(false);
+    const handleToggleNote = () => {
+        if (!isEditing) return;
+        if (props.isHint) {
+            const notes = song.notes;
+            notes.push({
+                track: props.track!,
+                time: props.time!,
+                title: props.title!,
+                description: '',
+                color: getTrackColor(props.title!)
+            })
+            updateSong({
+                ...song,
+                notes
+            })
+        } else {
+            updateSong({
+                ...song,
+                notes: song.notes.filter(note => !(note.track === props.track && note.time === props.time))
+            })
+        }
+    }
 
-    return <div className="absolute z-10 w-3 h-3 flex justify-center items-center cursor-pointer" style={{
-        top: props.time! * gridOptions.timeScalePer1s - 6,
-    }} onMouseEnter={() => {
-        setFocused(true)
-    }} onMouseLeave={() => {
-        setFocused(false)
-    }}>
-        <div className={[
-            'w-2 h-2 rounded-full',
-            props.isHint ? 'bg-transparent' : 'bg-red-500',
-            focused && props.isHint ? '!bg-red-500/50' : ''
-        ].join(' ')}></div>
-    </div>;
+    return <>
+        <div className="absolute z-10 w-3 h-3 flex justify-center items-center cursor-pointer rounded-full" style={{
+            top: props.time! * gridOptions.timeScalePer1s - 6,
+            background: focused ? getTrackColor(props.title!, 0.7) : '',
+        }} onMouseEnter={() => {
+            setFocused(true)
+        }} onMouseLeave={() => {
+            setFocused(false)
+        }} onClick={handleToggleNote}>
+            <div className="w-2 h-2 rounded-full" style={{
+                background: props.isHint ? (focused ? getTrackColor(props.title!, 0.3) : 'transparent') : getTrackColor(props.title!),
+            }}></div>
+            {focused && <div className="absolute left-4 text-sm rounded-sm font-bold bg-white text-dark-1000 px-1">{props.time}s</div>}
+        </div>
+    </>
 }
