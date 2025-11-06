@@ -3,10 +3,9 @@ import { Note as NoteProps } from "../../../definitions";
 import { useMidiEditorContext } from "../providers/MidiEditorProvider.Context";
 
 function NoteEle(props: Partial<NoteProps> & { isHint?: boolean }) {
-    const { gridOptions, getTrackColor, updateSong, song, isEditing } = useMidiEditorContext();
+    const { gridOptions, getTrackColor, updateSong, song } = useMidiEditorContext();
     const [focused, setFocused] = useState(false);
     const handleToggleNote = () => {
-        if (!isEditing) return;
         if (props.isHint) {
             const notes = song.notes;
             notes.push({

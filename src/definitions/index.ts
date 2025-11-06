@@ -25,7 +25,7 @@ export const TrackColor = {
   [TrackTitle.Tambourine]: "#33FFFF", // neon cyan
   [TrackTitle.LeadSynth]: "#FA5252", // vivid red
   [TrackTitle.Bass]: "#00FF66", // bright lime green
-  [TrackTitle.Pad]: "#1122FF", // bright sky blue
+  [TrackTitle.Pad]: "#4C6EF5", // bright sky blue
   [TrackTitle.Arp]: "#FF33CC", // neon magenta
   [TrackTitle.FX]: "#66FF00", // neon green-yellow
 } as const;
@@ -50,5 +50,4 @@ export type Song = {
 
 export type MidiEditor = {
   songs: Song[];
-  draftSongs?: Song[];
 };

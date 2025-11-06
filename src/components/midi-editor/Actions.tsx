@@ -7,7 +7,7 @@ import { isEqual } from 'lodash'
 
 export function Actions(props: { id: string }) {
     const { updateSong, getSongById } = useMidiEditorStore();
-    const { isEditing, song, resetSong } = useMidiEditorContext();
+    const { song, resetSong } = useMidiEditorContext();
 
     const hasChange = useMemo(() => {
         return !isEqual(getSongById(props.id), song);
@@ -49,6 +49,10 @@ export function Actions(props: { id: string }) {
                 <Button size={'xs'} color={'orange'} onClick={handleSave}>
                     <IconList className="lg:hidden inline-block" />
                     <span className="hidden lg:inline-block">Note List</span>
+                </Button>
+                <Button size={'xs'} color={'green'} onClick={handleSave}>
+                    <IconList className="lg:hidden inline-block" />
+                    <span className="hidden lg:inline-block">Export</span>
                 </Button>
                 <Button disabled={!hasChange} size={'xs'} color={'blue'} onClick={handleSave}>
                     <IconDeviceFloppy className="lg:hidden inline-block" />

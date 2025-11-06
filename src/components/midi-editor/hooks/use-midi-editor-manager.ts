@@ -5,7 +5,6 @@ import { useDisclosure } from "@mantine/hooks";
 
 export function useMidiEditorManager({ id }: { id: string }) {
   const { getSongById } = useMidiEditorStore();
-  const [isEditing, setIsEditing] = useState(true);
   const [song, setSong] = useState<Song>(
     JSON.parse(JSON.stringify(getSongById(id)!))
   );
@@ -26,7 +25,6 @@ export function useMidiEditorManager({ id }: { id: string }) {
   };
 
   const updateSong = (updatedSong: Partial<Song>) => {
-    if (!isEditing) return;
     setSong((prevSong) => ({
       ...prevSong,
       ...updatedSong,
@@ -46,13 +44,11 @@ export function useMidiEditorManager({ id }: { id: string }) {
   return {
     id,
     song,
-    isEditing,
     gridOptions,
     addNewTrackModalOpened,
     resetSong,
     openAddNewTrackModal,
     closeAddNewTrackModal,
-    setIsEditing,
     updateSong,
     setGridOptions,
     getTrackColor,
