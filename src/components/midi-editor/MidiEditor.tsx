@@ -1,5 +1,6 @@
 import { Song } from "../../definitions";
 import { Actions } from "./Actions";
+import { AddNewNoteModal } from "./AddNewNoteModal";
 import { AddNewTrackModal } from "./AddNewTrackModal";
 import { NoteGrid } from "./note-grid/NoteGrid";
 import { NoteList } from "./NoteList";
@@ -24,6 +25,7 @@ export function MidiEditor(props: Song) {
         <Actions id={props.id} />
         <NoteList />
         <AddNewTrackModal />
+        <AddNewNoteModal />
       </div>
     </MidiEditorProvider>
   );

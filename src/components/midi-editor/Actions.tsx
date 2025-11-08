@@ -15,7 +15,8 @@ import { isEqual } from "lodash";
 
 export function Actions(props: { id: string }) {
   const { updateSong, getSongById } = useMidiEditorStore();
-  const { song, resetSong, openNoteListModal } = useMidiEditorContext();
+  const { song, resetSong, openNoteListModal, openAddNewNoteModal } =
+    useMidiEditorContext();
 
   const hasChange = useMemo(() => {
     return !isEqual(getSongById(props.id), song);
@@ -62,7 +63,7 @@ export function Actions(props: { id: string }) {
           </Tooltip>
         </div>
         <div className="flex gap-2 justify-end col-span-2 lg:col-span-1">
-          <Button size={"xs"} color={"yellow"} onClick={handleSave}>
+          <Button size={"xs"} color={"yellow"} onClick={openAddNewNoteModal}>
             <IconPlus className="lg:hidden inline-block" />
             <span className="hidden lg:inline-block">Add Note</span>
           </Button>

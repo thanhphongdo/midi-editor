@@ -30,6 +30,7 @@ export function NoteList() {
     song,
     deleteNote,
     getTrackColor,
+    openAddNewNoteModal,
   } = useMidiEditorContext();
 
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -125,19 +126,21 @@ export function NoteList() {
       }}
     >
       <div className="w-full">
-        <TextInput
-          placeholder="Filter notes..."
-          mb="md"
-          value={filter ?? ""}
-          rightSection={
-            <CloseButton
-              aria-label="Clear input"
-              onClick={() => setFilter("")}
-              style={{ display: filter ? undefined : "none" }}
-            />
-          }
-          onChange={(e) => setFilter(e.currentTarget.value)}
-        />
+        <div className=" sticky top-[3.75rem] z-10">
+          <TextInput
+            placeholder="Filter notes..."
+            mb="md"
+            value={filter ?? ""}
+            rightSection={
+              <CloseButton
+                aria-label="Clear input"
+                onClick={() => setFilter("")}
+                style={{ display: filter ? undefined : "none" }}
+              />
+            }
+            onChange={(e) => setFilter(e.currentTarget.value)}
+          />
+        </div>
 
         <Table striped highlightOnHover>
           <Table.Thead>
@@ -195,7 +198,7 @@ export function NoteList() {
         mt="lg"
         justify="flex-end"
       >
-        <Button color="blue" onClick={() => console.log("Add note")}>
+        <Button color="blue" onClick={openAddNewNoteModal}>
           Add Note
         </Button>
         <Button onClick={closeNoteListModal} color="red">

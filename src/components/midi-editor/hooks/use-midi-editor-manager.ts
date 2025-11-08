@@ -21,6 +21,11 @@ export function useMidiEditorManager({ id }: { id: string }) {
   ] = useDisclosure(false);
 
   const [
+    addNewNoteModalOpened,
+    { open: openAddNewNoteModal, close: closeAddNewNoteModal },
+  ] = useDisclosure(false);
+
+  const [
     noteListOpened,
     { open: openNoteListModal, close: closeNoteListModal },
   ] = useDisclosure(false);
@@ -67,10 +72,13 @@ export function useMidiEditorManager({ id }: { id: string }) {
     song,
     gridOptions,
     addNewTrackModalOpened,
+    addNewNoteModalOpened,
     noteListOpened,
     resetSong,
     openAddNewTrackModal,
     closeAddNewTrackModal,
+    openAddNewNoteModal,
+    closeAddNewNoteModal,
     openNoteListModal,
     closeNoteListModal,
     updateSong,

@@ -29,7 +29,9 @@ function NoteEle(props: Partial<NoteProps> & { isHint?: boolean }) {
         className="absolute z-10 w-3 h-3 flex justify-center items-center cursor-pointer rounded-full"
         style={{
           top: props.time! * gridOptions.timeScalePer1s - 6,
-          background: focused ? getTrackColor(props.title!, 0.7) : "",
+          background: focused
+            ? props.color ?? getTrackColor(props.title!, 0.7)
+            : "",
         }}
         onMouseEnter={() => {
           setFocused(true);
@@ -44,7 +46,7 @@ function NoteEle(props: Partial<NoteProps> & { isHint?: boolean }) {
           style={{
             background: props.isHint
               ? getTrackColor(props.title!, 0.3)
-              : getTrackColor(props.title!),
+              : props.color ?? getTrackColor(props.title!),
           }}
         ></div>
         {focused && (

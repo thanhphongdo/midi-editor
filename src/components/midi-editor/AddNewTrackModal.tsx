@@ -58,10 +58,10 @@ export function AddNewTrackModal() {
       </div>
       <Group mt="lg" justify="flex-end">
         <Button disabled={!track} onClick={handleConfirm} color="blue">
-          Confirm
+          Add Track
         </Button>
         <Button onClick={closeAddNewTrackModal} color="red">
-          Close
+          Cancel
         </Button>
       </Group>
     </Modal>
