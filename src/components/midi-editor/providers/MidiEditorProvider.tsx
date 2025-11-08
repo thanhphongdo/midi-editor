@@ -5,7 +5,7 @@ import { useMidiEditorManager } from "../hooks/use-midi-editor-manager";
 export const MidiEditorProvider = ({
   children,
   id,
-}: PropsWithChildren & { id: string; }) => {
+}: PropsWithChildren & { id: string }) => {
   const midiEditorEditor = useMidiEditorManager({ id });
 
   return (

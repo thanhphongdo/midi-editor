@@ -2,7 +2,7 @@ import { AppShell, Burger, Drawer, Group, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { PropsWithChildren } from "react";
 import { SwitchTheme } from "../SwitchTheme";
-import { useNavigate } from 'react-router'
+import { useNavigate } from "react-router";
 
 export function Layout({ children }: PropsWithChildren) {
   const [opened, { toggle, close }] = useDisclosure();
@@ -25,7 +25,12 @@ export function Layout({ children }: PropsWithChildren) {
               size="sm"
             />
             <div className="flex-1 text-center">
-              <Text size="xl" fw={600} className="font-fredoka cursor-pointer" onClick={() => navigate('/')}>
+              <Text
+                size="xl"
+                fw={600}
+                className="font-fredoka cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 MIDI Editor
               </Text>
             </div>

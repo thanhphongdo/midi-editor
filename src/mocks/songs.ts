@@ -2,7 +2,7 @@ import { Song, TrackTitle } from "../definitions";
 
 export const Songs: Song[] = [
   {
-    id: '2a1ecff6-f3bd-49cb-b65b-b6fb80ad3f5a',
+    id: "2a1ecff6-f3bd-49cb-b65b-b6fb80ad3f5a",
     name: "Rock Beat 120 BPM",
     description: "Simple rock drum pattern",
     totalDuration: 30,
@@ -72,11 +72,11 @@ export const Songs: Song[] = [
         title: TrackTitle.HiHat,
         description: "Closed hi-hat",
         color: "#10B981",
-      }
+      },
     ],
   },
   {
-    id: '5a8c51c3-8187-430a-9149-0b98bb10fb64',
+    id: "5a8c51c3-8187-430a-9149-0b98bb10fb64",
     name: "Electronic Groove",
     description: "Synth bassline with drums",
     totalDuration: 180,

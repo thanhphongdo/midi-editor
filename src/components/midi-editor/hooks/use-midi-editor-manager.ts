@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMidiEditorStore } from "../../../stores/store";
-import { Song, TrackColor } from "../../../definitions";
+import { Note, Song, TrackColor } from "../../../definitions";
 import { useDisclosure } from "@mantine/hooks";
 
 export function useMidiEditorManager({ id }: { id: string }) {
@@ -20,6 +20,11 @@ export function useMidiEditorManager({ id }: { id: string }) {
     { open: openAddNewTrackModal, close: closeAddNewTrackModal },
   ] = useDisclosure(false);
 
+  const [
+    noteListOpened,
+    { open: openNoteListModal, close: closeNoteListModal },
+  ] = useDisclosure(false);
+
   const resetSong = () => {
     setSong(JSON.parse(JSON.stringify(getSongById(id)!)));
   };
@@ -28,6 +33,22 @@ export function useMidiEditorManager({ id }: { id: string }) {
     setSong((prevSong) => ({
       ...prevSong,
       ...updatedSong,
+    }));
+  };
+
+  const deleteNote = (note: Partial<Note>) => {
+    setSong((prevSong) => ({
+      ...prevSong,
+      notes: prevSong.notes.filter(
+        (n) => !(n.track === note.track && n.time === note.time)
+      ),
+    }));
+  };
+
+  const addNote = (note: Note) => {
+    setSong((prevSong) => ({
+      ...prevSong,
+      notes: [...prevSong.notes, note],
     }));
   };
 
@@ -46,10 +67,15 @@ export function useMidiEditorManager({ id }: { id: string }) {
     song,
     gridOptions,
     addNewTrackModalOpened,
+    noteListOpened,
     resetSong,
     openAddNewTrackModal,
     closeAddNewTrackModal,
+    openNoteListModal,
+    closeNoteListModal,
     updateSong,
+    deleteNote,
+    addNote,
     setGridOptions,
     getTrackColor,
   };
