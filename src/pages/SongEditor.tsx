@@ -10,7 +10,7 @@ export const SongEditor = () => {
 
   return (
     <Layout>
-      <div className="h-[calc(100vh_-_9.5rem)]">
+      <div className="h-[calc(100dvh_-_9.5rem)]">
         {!!song && <MidiEditor {...song} />}
       </div>
     </Layout>
