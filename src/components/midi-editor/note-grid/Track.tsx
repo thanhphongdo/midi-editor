@@ -66,9 +66,14 @@ function TrackEle({
           onClick={handleAddNewTrack}
           onMouseEnter={() => setTitleHover(true)}
           onMouseLeave={() => setTitleHover(false)}
-          {...(isAdding ? {} : { ...dragListeners, ...dragAttributes })}
         >
-          {isAdding && <IconPlus size={16} className="mb-1 mx-1" />} {title}
+          <div
+            className="w-full h-full text-sm flex justify-center items-end"
+            {...(isAdding ? {} : { ...dragListeners, ...dragAttributes })}
+          >
+            {isAdding && <IconPlus size={16} className="mb-[2px] mx-1" />}
+            {title}
+          </div>
           {!isAdding && titleHover && (
             <div
               className="absolute top-3 right-3 lg:right-5 p-[2px] bg-red-500/60 hover:bg-red-500 rounded-full"
