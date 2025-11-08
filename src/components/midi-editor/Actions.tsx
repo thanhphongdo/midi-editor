@@ -55,9 +55,9 @@ export function Actions(props: { id: string }) {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-1">
         <div className="hidden lg:block"></div>
-        <div className="flex gap-2 justify-start lg:justify-center select-none">
+        <div className="flex gap-1 justify-start lg:justify-center select-none">
           <Tooltip label="Zoom Out Time Line" withArrow>
             <div
               className="p-1 bg-blue-500/50 flex justify-center items-center rounded-md cursor-pointer"
@@ -103,7 +103,7 @@ export function Actions(props: { id: string }) {
             </div>
           </Tooltip>
         </div>
-        <div className="flex gap-2 justify-end col-span-2 lg:col-span-1">
+        <div className="flex gap-1 justify-end col-span-2 lg:col-span-1">
           <Button size={"xs"} color={"yellow"} onClick={openAddNewNoteModal}>
             <IconPlus className="lg:hidden inline-block" />
             <span className="hidden lg:inline-block">Add Note</span>

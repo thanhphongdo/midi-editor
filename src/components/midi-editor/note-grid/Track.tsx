@@ -1,18 +1,28 @@
-import { Note } from "./Note";
-import { Note as NoteProps, TrackTitle } from "../../../definitions";
-import { useMidiEditorContext } from "../providers/MidiEditorProvider.Context";
-import { IconPlus, IconX } from "@tabler/icons-react";
 import { memo, useState } from "react";
-import { Button, Group, Modal, Title } from "@mantine/core";
+import { TrackTitle, Note as NoteProps } from "../../../definitions";
+import { useMidiEditorContext } from "../providers/MidiEditorProvider.Context";
 import { useDisclosure } from "@mantine/hooks";
-import { PlayerLine } from "./PlayerLine";
+import { IconPlus, IconX } from "@tabler/icons-react";
+import { Button, Group, Modal, Title } from "@mantine/core";
+import { Note } from "./Note";
 
-function TrackEle(props: {
+type TrackEleProps = {
   track: number;
   title: TrackTitle;
   notes: Array<NoteProps>;
   isAdding?: boolean;
-}) {
+  dragListeners?: any;
+  dragAttributes?: any;
+};
+
+function TrackEle({
+  track,
+  title,
+  notes,
+  isAdding,
+  dragListeners,
+  dragAttributes,
+}: TrackEleProps) {
   const { gridOptions, getTrackColor, openAddNewTrackModal, updateSong, song } =
     useMidiEditorContext();
 
@@ -21,19 +31,19 @@ function TrackEle(props: {
   const [opened, { open, close }] = useDisclosure();
 
   const handleAddNewTrack = () => {
-    if (!props.isAdding) return;
+    if (!isAdding) return;
     openAddNewTrackModal();
   };
 
   const handleRemoveTrack = () => {
     close();
     const newTrackLabels = song.trackLabels.filter(
-      (_, idx) => idx + 1 !== props.track
+      (_, idx) => idx + 1 !== track
     );
     const newNotes = song.notes
-      .filter((note) => note.track !== props.track)
+      .filter((note) => note.track !== track)
       .map((note) => {
-        if (note.track > props.track) {
+        if (note.track > track) {
           return { ...note, track: note.track - 1 };
         }
         return note;
@@ -52,20 +62,16 @@ function TrackEle(props: {
     <>
       <div>
         <div
-          className="h-8 flex items-end justify-center sticky top-0 bg-dark-1000 !text-white z-[15] font-bold cursor-pointer w-[calc(100%_+_0.5rem)] md:w-[calc(100%_+_1rem)] pr-2 md:pr-4 left-0"
+          className="h-8 flex items-end justify-center sticky top-0 bg-dark-1000 !text-white z-[15] font-bold cursor-grab select-none w-[calc(100%_+_0.5rem)] lg:w-[calc(100%_+_1rem)] pr-2 lg:pr-4 left-0"
           onClick={handleAddNewTrack}
-          onMouseEnter={() => {
-            setTitleHover(true);
-          }}
-          onMouseLeave={() => {
-            setTitleHover(false);
-          }}
+          onMouseEnter={() => setTitleHover(true)}
+          onMouseLeave={() => setTitleHover(false)}
+          {...(isAdding ? {} : { ...dragListeners, ...dragAttributes })}
         >
-          {props.isAdding && <IconPlus size={16} className="mb-1 mx-1" />}{" "}
-          {props.title}
-          {!props.isAdding && titleHover && (
+          {isAdding && <IconPlus size={16} className="mb-1 mx-1" />} {title}
+          {!isAdding && titleHover && (
             <div
-              className="absolute top-3 right-3 md:right-5 p-[2px] bg-red-500/60 hover:bg-red-500 rounded-full"
+              className="absolute top-3 right-3 lg:right-5 p-[2px] bg-red-500/60 hover:bg-red-500 rounded-full"
               onClick={(e) => {
                 e.stopPropagation();
                 open();
@@ -82,7 +88,7 @@ function TrackEle(props: {
             height:
               (gridOptions.maxDuration + gridOptions.interval) *
               gridOptions.timeScalePer1s,
-            background: getTrackColor(props.title, 0.1),
+            background: getTrackColor(title, 0.1),
           }}
           onMouseMove={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
@@ -103,24 +109,18 @@ function TrackEle(props: {
             setHintTime(null);
           }}
         >
-          <PlayerLine />
           <div
             className="h-full border-l-2"
             style={{
-              borderColor: getTrackColor(props.title, 0.3),
+              borderColor: getTrackColor(title, 0.3),
             }}
           ></div>
-          {!props.isAdding && (
+          {!isAdding && (
             <>
               {hintTime !== null && hintTime <= gridOptions.maxDuration && (
-                <Note
-                  time={hintTime}
-                  title={props.title}
-                  track={props.track}
-                  isHint
-                />
+                <Note time={hintTime} title={title} track={track} isHint />
               )}
-              {props.notes.map((note, index) => (
+              {notes.map((note, index) => (
                 <Note
                   key={note.time + "-" + note.track + "-" + index}
                   {...note}

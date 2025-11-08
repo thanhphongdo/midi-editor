@@ -86,7 +86,7 @@ export const Home = () => {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <Title order={3}>Your Songs</Title>
-          <div className="flex gap-2 md:gap-4">
+          <div className="flex gap-2 lg:gap-4">
             <Button
               size="xs"
               leftSection={<IconPlus />}
