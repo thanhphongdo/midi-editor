@@ -113,6 +113,7 @@ export function useMidiEditorManager({ id }: { id: string }) {
       });
       clearInterval(playerIntervalRef.current!);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player.time]);
 
   useEffect(() => {

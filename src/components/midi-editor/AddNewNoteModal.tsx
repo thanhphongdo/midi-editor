@@ -75,10 +75,11 @@ export function AddNewNoteModal() {
       setValue("color", getTrackColor(selectedTrack));
       trigger(["title", "color"]);
     }
-  }, [watch("track"), setValue]);
+  }, [getTrackColor, setValue, trigger, watch]);
 
   useEffect(() => {
     setDuplicatedError(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch("time"), watch("track")]);
 
   const onSubmit = (data: FormValues) => {

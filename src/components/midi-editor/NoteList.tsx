@@ -39,61 +39,55 @@ export function NoteList() {
 
   const columnHelper = createColumnHelper<Note>();
 
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor("track", {
-        header: "Track",
-        cell: (info) => (
-          <span
-            style={{
-              color: getTrackColor(song.trackLabels[info.getValue() - 1]),
-            }}
-          >
-            {song.trackLabels[info.getValue() - 1]}
-          </span>
-        ),
-      }),
-      columnHelper.accessor("title", {
-        header: "Note Title",
-        cell: (info) => info.getValue(),
-      }),
-      columnHelper.accessor("time", {
-        header: "Time",
-        cell: (info) => `${info.getValue()}s`,
-      }),
-      columnHelper.accessor("color", {
-        header: "Color",
-        cell: (info) => (
-          <div
-            style={{
-              backgroundColor: info.getValue(),
-              width: 20,
-              height: 20,
-              borderRadius: 4,
-              border: "1px solid #ccc",
-            }}
-          />
-        ),
-      }),
-      columnHelper.accessor("description", {
-        header: "Description",
-        cell: (info) => info.getValue() || "-",
-      }),
-      columnHelper.display({
-        id: "actions",
-        header: "Delete",
-        cell: (info) => (
-          <ActionIcon
-            color="red"
-            onClick={() => handleDelete(info.row.original)}
-          >
-            <IconTrash size={16} />
-          </ActionIcon>
-        ),
-      }),
-    ],
-    []
-  );
+  const columns = [
+    columnHelper.accessor("track", {
+      header: "Track",
+      cell: (info) => (
+        <span
+          style={{
+            color: getTrackColor(song.trackLabels[info.getValue() - 1]),
+          }}
+        >
+          {song.trackLabels[info.getValue() - 1]}
+        </span>
+      ),
+    }),
+    columnHelper.accessor("title", {
+      header: "Note Title",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("time", {
+      header: "Time",
+      cell: (info) => `${info.getValue()}s`,
+    }),
+    columnHelper.accessor("color", {
+      header: "Color",
+      cell: (info) => (
+        <div
+          style={{
+            backgroundColor: info.getValue(),
+            width: 20,
+            height: 20,
+            borderRadius: 4,
+            border: "1px solid #ccc",
+          }}
+        />
+      ),
+    }),
+    columnHelper.accessor("description", {
+      header: "Description",
+      cell: (info) => info.getValue() || "-",
+    }),
+    columnHelper.display({
+      id: "actions",
+      header: "Delete",
+      cell: (info) => (
+        <ActionIcon color="red" onClick={() => handleDelete(info.row.original)}>
+          <IconTrash size={16} />
+        </ActionIcon>
+      ),
+    }),
+  ];
 
   const handleDelete = (note: Note) => {
     deleteNote(note);

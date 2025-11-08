@@ -32,7 +32,7 @@ export function Actions(props: { id: string }) {
 
   const hasChange = useMemo(() => {
     return !isEqual(getSongById(props.id), song);
-  }, [song, getSongById(props.id)]);
+  }, [getSongById, props.id, song]);
 
   const handleSave = () => {
     updateSong(props.id, song!);
