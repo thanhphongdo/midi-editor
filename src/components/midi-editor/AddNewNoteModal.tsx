@@ -75,7 +75,7 @@ export function AddNewNoteModal() {
       setValue("color", getTrackColor(selectedTrack));
       trigger(["title", "color"]);
     }
-  }, [getTrackColor, setValue, trigger, watch]);
+  }, [watch("track")]);
 
   useEffect(() => {
     setDuplicatedError(false);
