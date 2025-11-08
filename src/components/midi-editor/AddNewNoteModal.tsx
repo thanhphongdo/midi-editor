@@ -15,7 +15,7 @@ import { useMidiEditorContext } from "./providers/MidiEditorProvider.Context";
 import { Note, TrackTitle } from "../../definitions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const schema = z.object({
   track: z.string("Track is required").min(1, "Track is required"),
