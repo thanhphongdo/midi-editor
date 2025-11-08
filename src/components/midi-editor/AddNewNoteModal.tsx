@@ -79,7 +79,6 @@ export function AddNewNoteModal() {
 
   useEffect(() => {
     setDuplicatedError(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch("time"), watch("track")]);
 
   const onSubmit = (data: FormValues) => {
