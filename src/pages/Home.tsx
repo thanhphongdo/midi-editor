@@ -11,7 +11,7 @@ import { Song } from "../definitions";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const { addSong, overwriteSong, getSongById, songs } = useMidiEditorStore();
+  const { addSong, overwriteSong, getSongById } = useMidiEditorStore();
   const [opened, { open, close }] = useDisclosure();
   const [jsonSong, setJsonSong] = useState<Song | null>(null);
 
