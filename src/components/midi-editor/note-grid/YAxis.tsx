@@ -20,10 +20,7 @@ function YAxisEle() {
       }}
       className="w-16 bg-dark-1000 !text-white"
     >
-      {/* <div className="border-r-2 border-red-400/40 relative bg-dark-1000">
-            <div className="h-6 absolute right-4 -bottom-2">0s</div>
-            <div className="border-b-2 border-red-400/40 w-2 absolute right-0 bottom-[-2px] z-30"></div>
-        </div> */}
+      {/* <div className="absolute w-[1500px] top-[20px] bg-red-300 h-[2px] z-50 left-16"></div> */}
       {sticks.map((item) => (
         <div
           key={item.time}

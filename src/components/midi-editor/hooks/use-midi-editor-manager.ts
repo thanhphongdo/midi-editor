@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMidiEditorStore } from "../../../stores/store";
 import { Note, Song, TrackColor } from "../../../definitions";
 import { useDisclosure } from "@mantine/hooks";
@@ -14,6 +14,22 @@ export function useMidiEditorManager({ id }: { id: string }) {
     maxDuration: 300,
     interval: 5,
   });
+
+  const [player, setPlayer] = useState<{
+    state: "PLAYING" | "PAUSED" | "STOPPED";
+    time: number;
+    scrollMock: number;
+  }>({
+    state: "PAUSED",
+    time: 0,
+    scrollMock: 0,
+  });
+
+  const playerIntervalRef = useRef<NodeJS.Timer | null>(null);
+
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  const headerHeight = 48;
 
   const [
     addNewTrackModalOpened,
@@ -67,6 +83,65 @@ export function useMidiEditorManager({ id }: { id: string }) {
     return `${color}${alpha === 1 ? "" : alphaHex}`;
   };
 
+  const play = () => {
+    setPlayer({
+      state: "PLAYING",
+      time: player.time,
+      scrollMock: 0,
+    });
+
+    playerIntervalRef.current = setInterval(() => {
+      setPlayer((prevPlayer) => ({
+        ...prevPlayer,
+        time: prevPlayer.time + 0.5,
+      }));
+    }, 500);
+  };
+
+  useEffect(() => {
+    const gridHeight = (gridRef.current?.clientHeight ?? 0) - headerHeight;
+    setPlayer({
+      ...player,
+      scrollMock: Math.floor(
+        (player.time * gridOptions.timeScalePer1s) / gridHeight
+      ),
+    });
+    if (player.time >= gridOptions.maxDuration) {
+      setPlayer({
+        ...player,
+        state: "PAUSED",
+      });
+      clearInterval(playerIntervalRef.current!);
+    }
+  }, [player.time]);
+
+  useEffect(() => {
+    gridRef.current?.scrollTo({
+      top:
+        player.scrollMock * gridRef.current?.offsetHeight! -
+        headerHeight * player.scrollMock,
+      behavior: "smooth",
+    });
+  }, [player.scrollMock]);
+
+  const pause = () => {
+    setPlayer({
+      state: "PAUSED",
+      time: player.time,
+      scrollMock: player.scrollMock,
+    });
+    clearInterval(playerIntervalRef.current!);
+  };
+
+  const stop = () => {
+    setPlayer({
+      state: "PAUSED",
+      time: 0,
+      scrollMock: 0,
+    });
+    clearInterval(playerIntervalRef.current!);
+  };
+
   return {
     id,
     song,
@@ -74,6 +149,8 @@ export function useMidiEditorManager({ id }: { id: string }) {
     addNewTrackModalOpened,
     addNewNoteModalOpened,
     noteListOpened,
+    player,
+    gridRef,
     resetSong,
     openAddNewTrackModal,
     closeAddNewTrackModal,
@@ -86,5 +163,9 @@ export function useMidiEditorManager({ id }: { id: string }) {
     addNote,
     setGridOptions,
     getTrackColor,
+    setPlayer,
+    play,
+    pause,
+    stop,
   };
 }

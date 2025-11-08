@@ -5,9 +5,9 @@ import { Songs } from "../mocks/songs";
 
 export interface MidiEditorListStore extends MidiEditor {
   getSongById: (id: string) => Song | undefined;
-  updateSong: (name: string, song: Partial<Song>) => void;
+  updateSong: (id: string, song: Partial<Song>) => void;
   addSong: (song: Song) => void;
-  removeSong: (name: string) => void;
+  removeSong: (id: string) => void;
   overwriteSong: (song: Song) => void;
 }
 

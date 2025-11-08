@@ -3,7 +3,7 @@ import { Note as NoteProps } from "../../../definitions";
 import { useMidiEditorContext } from "../providers/MidiEditorProvider.Context";
 
 function NoteEle(props: Partial<NoteProps> & { isHint?: boolean }) {
-  const { gridOptions, getTrackColor, addNote, deleteNote } =
+  const { gridOptions, getTrackColor, addNote, deleteNote, player } =
     useMidiEditorContext();
   const [focused, setFocused] = useState(false);
   const handleToggleNote = () => {
@@ -23,15 +23,20 @@ function NoteEle(props: Partial<NoteProps> & { isHint?: boolean }) {
     }
   };
 
+  const isPlaying = player.state === "PLAYING" && player.time === props.time!;
+
   return (
     <>
       <div
         className="absolute z-10 w-3 h-3 flex justify-center items-center cursor-pointer rounded-full"
         style={{
           top: props.time! * gridOptions.timeScalePer1s - 6,
-          background: focused
+          background: isPlaying
+            ? props.color ?? getTrackColor(props.title!, 0.7)
+            : focused
             ? props.color ?? getTrackColor(props.title!, 0.7)
             : "",
+          transition: "background-color 0.5s ease",
         }}
         onMouseEnter={() => {
           setFocused(true);

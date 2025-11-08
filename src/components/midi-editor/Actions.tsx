@@ -15,8 +15,16 @@ import { isEqual } from "lodash";
 
 export function Actions(props: { id: string }) {
   const { updateSong, getSongById } = useMidiEditorStore();
-  const { song, resetSong, openNoteListModal, openAddNewNoteModal } =
-    useMidiEditorContext();
+  const {
+    song,
+    player,
+    resetSong,
+    openNoteListModal,
+    openAddNewNoteModal,
+    play,
+    pause,
+    stop,
+  } = useMidiEditorContext();
 
   const hasChange = useMemo(() => {
     return !isEqual(getSongById(props.id), song);
@@ -46,18 +54,31 @@ export function Actions(props: { id: string }) {
       <div className="grid grid-cols-3 gap-2">
         <div className="hidden lg:block"></div>
         <div className="flex gap-2 justify-start lg:justify-center">
-          {/* <Tooltip label="Play" withArrow>
-                    <div className="p-1 bg-blue-500/50 flex justify-center items-center rounded-md cursor-pointer">
-                        <IconPlayerPlay size={20} />
-                    </div>
-                </Tooltip> */}
-          <Tooltip label="Pause" withArrow>
-            <div className="p-1 bg-blue-500/50 flex justify-center items-center rounded-md cursor-pointer">
-              <IconPlayerPause size={20} />
-            </div>
-          </Tooltip>
+          {player.state === "PAUSED" && (
+            <Tooltip label="Play" withArrow>
+              <div
+                className="p-1 bg-blue-500/50 flex justify-center items-center rounded-md cursor-pointer"
+                onClick={play}
+              >
+                <IconPlayerPlay size={20} />
+              </div>
+            </Tooltip>
+          )}
+          {player.state === "PLAYING" && (
+            <Tooltip label="Pause" withArrow>
+              <div
+                className="p-1 bg-blue-500/50 flex justify-center items-center rounded-md cursor-pointer"
+                onClick={pause}
+              >
+                <IconPlayerPause size={20} />
+              </div>
+            </Tooltip>
+          )}
           <Tooltip label="Reset" withArrow>
-            <div className="p-1 bg-yellow-500/50 flex justify-center items-center rounded-md cursor-pointer">
+            <div
+              className="p-1 bg-yellow-500/50 flex justify-center items-center rounded-md cursor-pointer"
+              onClick={stop}
+            >
               <IconRefreshDot size={20} />
             </div>
           </Tooltip>

@@ -22,6 +22,7 @@ function TracksEle() {
             gridOptions.timeScalePer1s,
         }}
       >
+        {/* <div className="w-4 h-12 bg-green-500 sticky top-0 left-12 z-50"></div> */}
         {trackLabels.map((label, index) => (
           <Track
             key={label}

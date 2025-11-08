@@ -5,6 +5,7 @@ import { IconPlus, IconX } from "@tabler/icons-react";
 import { memo, useState } from "react";
 import { Button, Group, Modal, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { PlayerLine } from "./PlayerLine";
 
 function TrackEle(props: {
   track: number;
@@ -51,7 +52,7 @@ function TrackEle(props: {
     <>
       <div>
         <div
-          className="h-8 flex items-end justify-center sticky top-0 bg-dark-1000 !text-white z-[15] font-bold cursor-pointer"
+          className="h-8 flex items-end justify-center sticky top-0 bg-dark-1000 !text-white z-[15] font-bold cursor-pointer w-[calc(100%_+_0.5rem)] md:w-[calc(100%_+_1rem)] pr-2 md:pr-4 left-0"
           onClick={handleAddNewTrack}
           onMouseEnter={() => {
             setTitleHover(true);
@@ -60,11 +61,11 @@ function TrackEle(props: {
             setTitleHover(false);
           }}
         >
-          {props.isAdding && <IconPlus size={16} className="mb-1 mr-1" />}{" "}
+          {props.isAdding && <IconPlus size={16} className="mb-1 mx-1" />}{" "}
           {props.title}
           {!props.isAdding && titleHover && (
             <div
-              className="absolute top-3 right-1 p-[2px] bg-red-500/60 hover:bg-red-500 rounded-full"
+              className="absolute top-3 right-3 md:right-5 p-[2px] bg-red-500/60 hover:bg-red-500 rounded-full"
               onClick={(e) => {
                 e.stopPropagation();
                 open();
@@ -102,6 +103,7 @@ function TrackEle(props: {
             setHintTime(null);
           }}
         >
+          <PlayerLine />
           <div
             className="h-full border-l-2"
             style={{
@@ -118,8 +120,11 @@ function TrackEle(props: {
                   isHint
                 />
               )}
-              {props.notes.map((note) => (
-                <Note key={note.time} {...note} />
+              {props.notes.map((note, index) => (
+                <Note
+                  key={note.time + "-" + note.track + "-" + index}
+                  {...note}
+                />
               ))}
             </>
           )}
