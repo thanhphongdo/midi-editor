@@ -53,6 +53,10 @@ export function Actions(props: { id: string }) {
     URL.revokeObjectURL(url);
   };
 
+  const customButtonPadding = {
+    root: { paddingLeft: 8, paddingRight: 8 },
+  };
+
   return (
     <>
       <div className="grid grid-cols-3 gap-1">
@@ -104,15 +108,30 @@ export function Actions(props: { id: string }) {
           </Tooltip>
         </div>
         <div className="flex gap-1 justify-end col-span-2 lg:col-span-1">
-          <Button size={"xs"} color={"yellow"} onClick={openAddNewNoteModal}>
+          <Button
+            size={"xs"}
+            color={"yellow"}
+            styles={customButtonPadding}
+            onClick={openAddNewNoteModal}
+          >
             <IconPlus className="lg:hidden inline-block" />
             <span className="hidden lg:inline-block">Add Note</span>
           </Button>
-          <Button size={"xs"} color={"orange"} onClick={openNoteListModal}>
+          <Button
+            size={"xs"}
+            color={"orange"}
+            styles={customButtonPadding}
+            onClick={openNoteListModal}
+          >
             <IconList className="lg:hidden inline-block" />
             <span className="hidden lg:inline-block">Note List</span>
           </Button>
-          <Button size={"xs"} color={"green"} onClick={handleExport}>
+          <Button
+            size={"xs"}
+            color={"green"}
+            styles={customButtonPadding}
+            onClick={handleExport}
+          >
             <IconList className="lg:hidden inline-block" />
             <span className="hidden lg:inline-block">Export</span>
           </Button>
@@ -120,6 +139,7 @@ export function Actions(props: { id: string }) {
             disabled={!hasChange}
             size={"xs"}
             color={"blue"}
+            styles={customButtonPadding}
             onClick={handleSave}
           >
             <IconDeviceFloppy className="lg:hidden inline-block" />
@@ -129,6 +149,7 @@ export function Actions(props: { id: string }) {
             disabled={!hasChange}
             size={"xs"}
             color={"red"}
+            styles={customButtonPadding}
             onClick={handleReset}
           >
             <IconRestore className="lg:hidden inline-block" />
