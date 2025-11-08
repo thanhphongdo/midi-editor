@@ -142,6 +142,26 @@ export function useMidiEditorManager({ id }: { id: string }) {
     clearInterval(playerIntervalRef.current!);
   };
 
+  const zoomInTimeLine = () => {
+    if (gridOptions.timeScalePer1s >= 36) {
+      return;
+    }
+    setGridOptions((prevOptions) => ({
+      ...prevOptions,
+      timeScalePer1s: prevOptions.timeScalePer1s + 4,
+    }));
+  };
+
+  const zoomOutTimeLine = () => {
+    if (gridOptions.timeScalePer1s <= 16) {
+      return;
+    }
+    setGridOptions((prevOptions) => ({
+      ...prevOptions,
+      timeScalePer1s: prevOptions.timeScalePer1s - 4,
+    }));
+  };
+
   return {
     id,
     song,
@@ -167,5 +187,7 @@ export function useMidiEditorManager({ id }: { id: string }) {
     play,
     pause,
     stop,
+    zoomInTimeLine,
+    zoomOutTimeLine,
   };
 }

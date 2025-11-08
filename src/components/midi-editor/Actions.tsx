@@ -7,6 +7,8 @@ import {
   IconPlus,
   IconRefreshDot,
   IconRestore,
+  IconZoomIn,
+  IconZoomOut,
 } from "@tabler/icons-react";
 import { useMidiEditorStore } from "../../stores/store";
 import { useMidiEditorContext } from "./providers/MidiEditorProvider.Context";
@@ -24,6 +26,8 @@ export function Actions(props: { id: string }) {
     play,
     pause,
     stop,
+    zoomInTimeLine,
+    zoomOutTimeLine,
   } = useMidiEditorContext();
 
   const hasChange = useMemo(() => {
@@ -53,7 +57,23 @@ export function Actions(props: { id: string }) {
     <>
       <div className="grid grid-cols-3 gap-2">
         <div className="hidden lg:block"></div>
-        <div className="flex gap-2 justify-start lg:justify-center">
+        <div className="flex gap-2 justify-start lg:justify-center select-none">
+          <Tooltip label="Zoom Out Time Line" withArrow>
+            <div
+              className="p-1 bg-blue-500/50 flex justify-center items-center rounded-md cursor-pointer"
+              onClick={zoomOutTimeLine}
+            >
+              <IconZoomOut size={20} />
+            </div>
+          </Tooltip>
+          <Tooltip label="Zoom In Time Line" withArrow>
+            <div
+              className="p-1 bg-blue-500/50 flex justify-center items-center rounded-md cursor-pointer"
+              onClick={zoomInTimeLine}
+            >
+              <IconZoomIn size={20} />
+            </div>
+          </Tooltip>
           {player.state === "PAUSED" && (
             <Tooltip label="Play" withArrow>
               <div

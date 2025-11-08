@@ -87,8 +87,8 @@ function TrackEle(props: {
           onMouseMove={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             if (
-              e.clientX - rect.left < gridOptions.trackWidth / 2 - 8 ||
-              e.clientX - rect.left > gridOptions.trackWidth / 2 + 8
+              e.clientX - rect.left < gridOptions.trackWidth / 2 - 10 ||
+              e.clientX - rect.left > gridOptions.trackWidth / 2 + 10
             ) {
               setHintTime(null);
               return;

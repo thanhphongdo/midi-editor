@@ -28,9 +28,9 @@ function NoteEle(props: Partial<NoteProps> & { isHint?: boolean }) {
   return (
     <>
       <div
-        className="absolute z-10 w-3 h-3 flex justify-center items-center cursor-pointer rounded-full"
+        className="absolute z-10 w-4 h-4 flex justify-center items-center cursor-pointer rounded-full"
         style={{
-          top: props.time! * gridOptions.timeScalePer1s - 6,
+          top: props.time! * gridOptions.timeScalePer1s - 9,
           background: isPlaying
             ? props.color ?? getTrackColor(props.title!, 0.7)
             : focused
@@ -47,7 +47,7 @@ function NoteEle(props: Partial<NoteProps> & { isHint?: boolean }) {
         onClick={handleToggleNote}
       >
         <div
-          className="w-2 h-2 rounded-full"
+          className="w-[0.625rem] h-[0.625rem] rounded-full"
           style={{
             background: props.isHint
               ? getTrackColor(props.title!, 0.3)

@@ -35,9 +35,9 @@ export function Song(props: SongProp) {
       <Modal
         opened={opened}
         onClose={close}
-        title={<Title order={4}>Remove Track</Title>}
+        title={<Title order={4}>Remove Song</Title>}
       >
-        Are you sure you want to remove this track?
+        Are you sure you want to remove this song?
         <Group mt="lg" justify="flex-end">
           <Button onClick={() => removeSong(props.id)} color="blue">
             Delete

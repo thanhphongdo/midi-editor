@@ -34,7 +34,7 @@ export function Layout({ children }: PropsWithChildren) {
                 MIDI Editor
               </Text>
             </div>
-            <div className="absolute right-4 top-0">
+            <div className="absolute right-0 top-0">
               <SwitchTheme />
             </div>
           </div>
