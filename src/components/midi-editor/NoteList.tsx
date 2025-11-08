@@ -119,8 +119,8 @@ export function NoteList() {
         },
       }}
     >
-      <div className="w-full">
-        <div className=" sticky top-[3.75rem] z-10">
+      <div>
+        <div className="sticky top-[3.75rem] z-10">
           <TextInput
             placeholder="Filter notes..."
             mb="md"
@@ -136,55 +136,60 @@ export function NoteList() {
           />
         </div>
 
-        <Table striped highlightOnHover>
-          <Table.Thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <Table.Tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <Table.Th
-                    key={header.id}
-                    onClick={header.column.getToggleSortingHandler()}
-                    style={{
-                      cursor: header.column.getCanSort()
-                        ? "pointer"
-                        : "default",
-                    }}
+        <div className="max-w-[calc(100vw_-2rem)] overflow-auto">
+          <Table striped highlightOnHover>
+            <Table.Thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <Table.Tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <Table.Th
+                      key={header.id}
+                      onClick={header.column.getToggleSortingHandler()}
+                      style={{
+                        cursor: header.column.getCanSort()
+                          ? "pointer"
+                          : "default",
+                      }}
+                    >
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </Table.Th>
+                  ))}
+                </Table.Tr>
+              ))}
+            </Table.Thead>
+            <Table.Tbody>
+              {table.getRowModel().rows.map((row) => (
+                <Table.Tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <Table.Td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Table.Td>
+                  ))}
+                </Table.Tr>
+              ))}
+              {table.getRowModel().rows.length === 0 && (
+                <Table.Tr>
+                  <Table.Td
+                    colSpan={columns.length}
+                    style={{ textAlign: "center" }}
                   >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    {{
-                      asc: " 🔼",
-                      desc: " 🔽",
-                    }[header.column.getIsSorted() as string] ?? null}
-                  </Table.Th>
-                ))}
-              </Table.Tr>
-            ))}
-          </Table.Thead>
-          <Table.Tbody>
-            {table.getRowModel().rows.map((row) => (
-              <Table.Tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <Table.Td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    No notes found
                   </Table.Td>
-                ))}
-              </Table.Tr>
-            ))}
-            {table.getRowModel().rows.length === 0 && (
-              <Table.Tr>
-                <Table.Td
-                  colSpan={columns.length}
-                  style={{ textAlign: "center" }}
-                >
-                  No notes found
-                </Table.Td>
-              </Table.Tr>
-            )}
-          </Table.Tbody>
-        </Table>
+                </Table.Tr>
+              )}
+            </Table.Tbody>
+          </Table>
+        </div>
       </div>
 
       <Group

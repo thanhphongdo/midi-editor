@@ -1,6 +1,7 @@
 import { Button, Tooltip } from "@mantine/core";
 import {
   IconDeviceFloppy,
+  IconFileExport,
   IconList,
   IconPlayerPause,
   IconPlayerPlay,
@@ -132,7 +133,7 @@ export function Actions(props: { id: string }) {
             styles={customButtonPadding}
             onClick={handleExport}
           >
-            <IconList className="lg:hidden inline-block" />
+            <IconFileExport className="lg:hidden inline-block" />
             <span className="hidden lg:inline-block">Export</span>
           </Button>
           <Button
