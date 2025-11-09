@@ -28,8 +28,10 @@ export function Song(props: SongProp) {
             <IconTrash size={16} />
           </ActionIcon>
         </div>
-        <Title order={2}>{props.name}</Title>
-        <Title order={4}>{props.description}</Title>
+        <Title order={2}>{props.name || "No Name"}</Title>
+        <Title order={4} className="italic">
+          {props.description || "No Description"}
+        </Title>
         <Title order={4}>Duration: {props.totalDuration} seconds</Title>
       </div>
       <Modal

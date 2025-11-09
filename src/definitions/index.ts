@@ -15,19 +15,19 @@ export enum TrackTitle {
 }
 
 export const TrackColor = {
-  [TrackTitle.Kick]: "#FF3B3B", // neon red
-  [TrackTitle.Snare]: "#3399FF", // bright neon blue
-  [TrackTitle.HiHat]: "#FFFF33", // bright yellow
-  [TrackTitle.Crash]: "#FF9933", // bright orange
-  [TrackTitle.Ride]: "#33FF77", // neon green
-  [TrackTitle.Tom1]: "#CC33FF", // neon purple
-  [TrackTitle.Tom2]: "#FF66B2", // neon pink
-  [TrackTitle.Tambourine]: "#33FFFF", // neon cyan
-  [TrackTitle.LeadSynth]: "#FA5252", // vivid red
-  [TrackTitle.Bass]: "#00FF66", // bright lime green
-  [TrackTitle.Pad]: "#4C6EF5", // bright sky blue
-  [TrackTitle.Arp]: "#FF33CC", // neon magenta
-  [TrackTitle.FX]: "#66FF00", // neon green-yellow
+  [TrackTitle.Kick]: "#FF3B3B",
+  [TrackTitle.Snare]: "#3399FF",
+  [TrackTitle.HiHat]: "#FFFF33",
+  [TrackTitle.Crash]: "#FF9933",
+  [TrackTitle.Ride]: "#12B886",
+  [TrackTitle.Tom1]: "#CC33FF",
+  [TrackTitle.Tom2]: "#FF66B2",
+  [TrackTitle.Tambourine]: "#33FFFF",
+  [TrackTitle.LeadSynth]: "#91A7FF",
+  [TrackTitle.Bass]: "#40C057",
+  [TrackTitle.Pad]: "#4C6EF5",
+  [TrackTitle.Arp]: "#FF33CC",
+  [TrackTitle.FX]: "#A61E4D",
 } as const;
 
 export type Note = {

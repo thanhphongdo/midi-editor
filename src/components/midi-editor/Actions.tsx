@@ -23,12 +23,13 @@ export function Actions(props: { id: string }) {
     player,
     resetSong,
     openNoteListModal,
-    openAddNewNoteModal,
+    openEditNoteModal,
     play,
     pause,
     stop,
     zoomInTimeLine,
     zoomOutTimeLine,
+    setCurrentNote,
   } = useMidiEditorContext();
 
   const hasChange = useMemo(() => {
@@ -36,7 +37,12 @@ export function Actions(props: { id: string }) {
   }, [song, getSongById(props.id)]);
 
   const handleSave = () => {
-    updateSong(props.id, song!);
+    const totalDuration = Math.max(...song.notes.map((note) => note.time));
+    updateSong(props.id, {
+      ...song!,
+      totalDuration,
+    });
+    setCurrentNote(null);
   };
 
   const handleReset = () => {
@@ -113,7 +119,7 @@ export function Actions(props: { id: string }) {
             size={"xs"}
             color={"yellow"}
             styles={customButtonPadding}
-            onClick={openAddNewNoteModal}
+            onClick={openEditNoteModal}
           >
             <IconPlus className="lg:hidden inline-block" />
             <span className="hidden lg:inline-block">Add Note</span>

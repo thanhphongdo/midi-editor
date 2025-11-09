@@ -8,6 +8,7 @@ export function useMidiEditorManager({ id }: { id: string }) {
   const [song, setSong] = useState<Song>(
     JSON.parse(JSON.stringify(getSongById(id)!))
   );
+  const [currentNote, setCurrentNote] = useState<Note | null>(null);
   const [gridOptions, setGridOptions] = useState({
     trackWidth: 120,
     timeScalePer1s: 20,
@@ -37,8 +38,8 @@ export function useMidiEditorManager({ id }: { id: string }) {
   ] = useDisclosure(false);
 
   const [
-    addNewNoteModalOpened,
-    { open: openAddNewNoteModal, close: closeAddNewNoteModal },
+    editNoteModalOpened,
+    { open: openEditNoteModal, close: closeEditNoteModal },
   ] = useDisclosure(false);
 
   const [
@@ -66,11 +67,38 @@ export function useMidiEditorManager({ id }: { id: string }) {
     }));
   };
 
+  const openUpdateNoteModal = (note: Note) => {
+    setCurrentNote(note);
+    openEditNoteModal();
+  };
+
   const addNote = (note: Note) => {
-    setSong((prevSong) => ({
-      ...prevSong,
-      notes: [...prevSong.notes, note],
-    }));
+    setSong((prevSong) => {
+      const notes = [...prevSong.notes, note];
+      const totalDuration = Math.max(...notes.map((note) => note.time));
+      return {
+        ...prevSong,
+        notes: [...notes],
+        totalDuration,
+      };
+    });
+  };
+
+  const updateNote = (oldNote: Note, newNote: Note) => {
+    setSong((prevSong) => {
+      const notes = prevSong.notes.map((note) => {
+        if (note.track === oldNote.track && note.time === oldNote.time) {
+          return newNote;
+        }
+        return note;
+      });
+      const totalDuration = Math.max(...notes.map((note) => note.time));
+      return {
+        ...prevSong,
+        notes: [...notes],
+        totalDuration,
+      };
+    });
   };
 
   const getTrackColor = (name: string, alpha = 1): string => {
@@ -97,32 +125,6 @@ export function useMidiEditorManager({ id }: { id: string }) {
       }));
     }, 500);
   };
-
-  useEffect(() => {
-    const gridHeight = (gridRef.current?.clientHeight ?? 0) - headerHeight;
-    setPlayer({
-      ...player,
-      scrollMock: Math.floor(
-        (player.time * gridOptions.timeScalePer1s) / gridHeight
-      ),
-    });
-    if (player.time >= gridOptions.maxDuration) {
-      setPlayer({
-        ...player,
-        state: "PAUSED",
-      });
-      clearInterval(playerIntervalRef.current!);
-    }
-  }, [player.time]);
-
-  useEffect(() => {
-    gridRef.current?.scrollTo({
-      top:
-        player.scrollMock * gridRef.current?.offsetHeight! -
-        headerHeight * player.scrollMock,
-      behavior: "smooth",
-    });
-  }, [player.scrollMock]);
 
   const pause = () => {
     setPlayer({
@@ -162,25 +164,60 @@ export function useMidiEditorManager({ id }: { id: string }) {
     }));
   };
 
+  useEffect(() => {
+    const gridHeight = (gridRef.current?.clientHeight ?? 0) - headerHeight;
+    setPlayer({
+      ...player,
+      scrollMock: Math.floor(
+        (player.time * gridOptions.timeScalePer1s) / gridHeight
+      ),
+    });
+    if (player.time >= gridOptions.maxDuration) {
+      setPlayer({
+        ...player,
+        state: "PAUSED",
+      });
+      clearInterval(playerIntervalRef.current!);
+    }
+  }, [player.time]);
+
+  useEffect(() => {
+    gridRef.current?.scrollTo({
+      top:
+        player.scrollMock * gridRef.current?.offsetHeight! -
+        headerHeight * player.scrollMock,
+      behavior: "smooth",
+    });
+  }, [player.scrollMock]);
+
+  useEffect(() => {
+    if (!editNoteModalOpened) {
+      setCurrentNote(null);
+    }
+  }, [editNoteModalOpened]);
+
   return {
     id,
     song,
     gridOptions,
     addNewTrackModalOpened,
-    addNewNoteModalOpened,
+    editNoteModalOpened,
     noteListOpened,
     player,
     gridRef,
+    currentNote,
     resetSong,
     openAddNewTrackModal,
     closeAddNewTrackModal,
-    openAddNewNoteModal,
-    closeAddNewNoteModal,
+    openEditNoteModal,
+    closeEditNoteModal,
     openNoteListModal,
     closeNoteListModal,
     updateSong,
     deleteNote,
+    openUpdateNoteModal,
     addNote,
+    updateNote,
     setGridOptions,
     getTrackColor,
     setPlayer,
@@ -189,5 +226,6 @@ export function useMidiEditorManager({ id }: { id: string }) {
     stop,
     zoomInTimeLine,
     zoomOutTimeLine,
+    setCurrentNote,
   };
 }

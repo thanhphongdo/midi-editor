@@ -16,6 +16,7 @@ import { Note, TrackTitle } from "../../definitions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useEffect, useState } from "react";
+import { uniqBy } from "lodash";
 
 const schema = z.object({
   track: z.string("Track is required").min(1, "Track is required"),
@@ -27,12 +28,14 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-export function AddNewNoteModal() {
+export function EditNoteModal() {
   const {
     song,
+    currentNote,
+    editNoteModalOpened,
     addNote,
-    addNewNoteModalOpened,
-    closeAddNewNoteModal,
+    updateNote,
+    closeEditNoteModal,
     getTrackColor,
   } = useMidiEditorContext();
 
@@ -57,7 +60,20 @@ export function AddNewNoteModal() {
   });
 
   useEffect(() => {
-    if (addNewNoteModalOpened) {
+    if (!editNoteModalOpened) {
+      return;
+    }
+    if (currentNote) {
+      reset({
+        track: song.trackLabels[currentNote.track - 1],
+        time: currentNote.time,
+        title: currentNote.title,
+        description: currentNote.description,
+        color: currentNote.color,
+      });
+      return;
+    }
+    if (!currentNote) {
       reset({
         track: undefined,
         time: 0,
@@ -65,8 +81,9 @@ export function AddNewNoteModal() {
         description: "",
         color: "#000000",
       });
+      return;
     }
-  }, [addNewNoteModalOpened, reset, song.trackLabels]);
+  }, [editNoteModalOpened, currentNote, song.trackLabels]);
 
   useEffect(() => {
     const selectedTrack = watch("track");
@@ -89,22 +106,35 @@ export function AddNewNoteModal() {
       description: data.description,
       color: data.color,
     };
-    const isDuplicateNote = song.notes.some(
+    let isDuplicateNote = song.notes.some(
       (note) => note.track === newNote.track && note.time === data.time
     );
+    if (
+      currentNote &&
+      currentNote.track === newNote.track &&
+      currentNote.time === data.time
+    ) {
+      isDuplicateNote = false;
+    }
     setDuplicatedError(isDuplicateNote);
     if (isDuplicateNote) {
       return;
     }
-    addNote(newNote);
-    closeAddNewNoteModal();
+    if (currentNote) {
+      updateNote(currentNote, newNote);
+    } else {
+      addNote(newNote);
+    }
+    closeEditNoteModal();
   };
 
   return (
     <Modal
-      opened={addNewNoteModalOpened}
-      onClose={closeAddNewNoteModal}
-      title={<Title order={4}>Add New Note</Title>}
+      opened={editNoteModalOpened}
+      onClose={closeEditNoteModal}
+      title={
+        <Title order={4}>{currentNote ? "Update Note" : "Add New Note"}</Title>
+      }
       size="md"
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -116,7 +146,10 @@ export function AddNewNoteModal() {
           )}
           <Select
             label="Track"
-            data={song.trackLabels.map((label) => ({ value: label, label }))}
+            data={uniqBy(
+              song.trackLabels.map((label) => ({ value: label, label })),
+              "label"
+            )}
             value={watch("track")}
             onChange={(val) => {
               setValue("track", val ?? "");
@@ -172,9 +205,9 @@ export function AddNewNoteModal() {
 
           <Group mt="md" justify="flex-end">
             <Button type="submit" color="blue">
-              Add Note
+              {currentNote ? "Update" : "Add"}
             </Button>
-            <Button onClick={closeAddNewNoteModal} color="red">
+            <Button onClick={closeEditNoteModal} color="red">
               Cancel
             </Button>
           </Group>

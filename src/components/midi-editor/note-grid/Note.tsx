@@ -55,8 +55,12 @@ function NoteEle(props: Partial<NoteProps> & { isHint?: boolean }) {
           }}
         ></div>
         {focused && (
-          <div className="absolute left-4 text-sm rounded-sm font-bold bg-white text-dark-1000 px-1">
-            {props.time}s
+          <div className="absolute left-6 text-sm rounded-sm font-bold bg-white text-dark-1000 px-1 py-1 flex flex-col gap-0">
+            <div className="max-w-24 truncate leading-4">{props.title}</div>
+            <div className="max-w-24 truncate leading-4 text-xs font-normal">
+              {props.description}
+            </div>
+            <div className="leading-4">{props.time}s</div>
           </div>
         )}
       </div>

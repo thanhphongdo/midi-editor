@@ -20,7 +20,12 @@ import {
   flexRender,
   createColumnHelper,
 } from "@tanstack/react-table";
-import { IconTrash } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconSortAscending,
+  IconSortDescending,
+  IconTrash,
+} from "@tabler/icons-react";
 import { Note } from "../../definitions";
 
 export function NoteList() {
@@ -29,8 +34,9 @@ export function NoteList() {
     closeNoteListModal,
     song,
     deleteNote,
+    openUpdateNoteModal,
     getTrackColor,
-    openAddNewNoteModal,
+    openEditNoteModal,
   } = useMidiEditorContext();
 
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -80,17 +86,32 @@ export function NoteList() {
     }),
     columnHelper.display({
       id: "actions",
-      header: "Delete",
+      header: "",
       cell: (info) => (
-        <ActionIcon color="red" onClick={() => handleDelete(info.row.original)}>
-          <IconTrash size={16} />
-        </ActionIcon>
+        <div className="flex gap-2 items-center">
+          <ActionIcon
+            color="yellow"
+            onClick={() => handleUpdate(info.row.original)}
+          >
+            <IconEdit size={16} />
+          </ActionIcon>
+          <ActionIcon
+            color="red"
+            onClick={() => handleDelete(info.row.original)}
+          >
+            <IconTrash size={16} />
+          </ActionIcon>
+        </div>
       ),
     }),
   ];
 
   const handleDelete = (note: Note) => {
     deleteNote(note);
+  };
+
+  const handleUpdate = (note: Note) => {
+    openUpdateNoteModal(note);
   };
 
   const table = useReactTable({
@@ -151,14 +172,18 @@ export function NoteList() {
                           : "default",
                       }}
                     >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {{
-                        asc: " 🔼",
-                        desc: " 🔽",
-                      }[header.column.getIsSorted() as string] ?? null}
+                      <div className="flex items-center">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {{
+                          asc: <IconSortAscending className="ml-2" size={14} />,
+                          desc: (
+                            <IconSortDescending className="ml-2" size={14} />
+                          ),
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
                     </Table.Th>
                   ))}
                 </Table.Tr>
@@ -197,7 +222,7 @@ export function NoteList() {
         mt="lg"
         justify="flex-end"
       >
-        <Button color="blue" onClick={openAddNewNoteModal}>
+        <Button color="blue" onClick={openEditNoteModal}>
           Add Note
         </Button>
         <Button onClick={closeNoteListModal} color="red">
