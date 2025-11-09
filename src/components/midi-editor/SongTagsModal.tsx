@@ -17,7 +17,7 @@ export function SongTagsModal() {
     <Modal
       opened={tagsModalOpened}
       onClose={closeTagsModal}
-      title={<Title order={4}>New Track</Title>}
+      title={<Title order={4}>Song Tags</Title>}
     >
       <div>
         <TagsInput
