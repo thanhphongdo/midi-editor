@@ -26,7 +26,6 @@ export function AddNewTrackModal() {
       opened={addNewTrackModalOpened}
       onClose={closeAddNewTrackModal}
       title={<Title order={4}>New Track</Title>}
-      centered
     >
       <div>
         <Select

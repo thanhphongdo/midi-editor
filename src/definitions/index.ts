@@ -45,6 +45,7 @@ export type Song = {
   totalDuration: number;
   trackLabels: TrackTitle[];
   notes: Note[];
+  tags?: string[];
   isDraft?: boolean;
 };
 

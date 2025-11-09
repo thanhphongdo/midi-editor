@@ -74,6 +74,7 @@ export const Songs: Song[] = [
         color: "#10B981",
       },
     ],
+    tags: ["rock", "drum"],
   },
   {
     id: "5a8c51c3-8187-430a-9149-0b98bb10fb64",

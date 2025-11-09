@@ -8,6 +8,7 @@ import {
   IconPlus,
   IconRefreshDot,
   IconRestore,
+  IconTags,
   IconZoomIn,
   IconZoomOut,
 } from "@tabler/icons-react";
@@ -24,6 +25,7 @@ export function Actions(props: { id: string }) {
     resetSong,
     openNoteListModal,
     openEditNoteModal,
+    openTagsModal,
     play,
     pause,
     stop,
@@ -61,7 +63,7 @@ export function Actions(props: { id: string }) {
   };
 
   const customButtonPadding = {
-    root: { paddingLeft: 8, paddingRight: 8 },
+    root: { paddingLeft: 6, paddingRight: 6 },
   };
 
   return (
@@ -115,6 +117,15 @@ export function Actions(props: { id: string }) {
           </Tooltip>
         </div>
         <div className="flex gap-1 justify-end col-span-2 lg:col-span-1">
+          <Button
+            size={"xs"}
+            color={"cyan"}
+            styles={customButtonPadding}
+            onClick={openTagsModal}
+          >
+            <IconTags className="lg:hidden inline-block" />
+            <span className="hidden lg:inline-block">Edit Tags</span>
+          </Button>
           <Button
             size={"xs"}
             color={"yellow"}

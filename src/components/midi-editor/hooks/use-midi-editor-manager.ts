@@ -4,7 +4,7 @@ import { Note, Song, TrackColor } from "../../../definitions";
 import { useDisclosure } from "@mantine/hooks";
 
 export function useMidiEditorManager({ id }: { id: string }) {
-  const { getSongById } = useMidiEditorStore();
+  const { getSongById, updateSong: updateSongStore } = useMidiEditorStore();
   const [song, setSong] = useState<Song>(
     JSON.parse(JSON.stringify(getSongById(id)!))
   );
@@ -47,15 +47,29 @@ export function useMidiEditorManager({ id }: { id: string }) {
     { open: openNoteListModal, close: closeNoteListModal },
   ] = useDisclosure(false);
 
+  const [tagsModalOpened, { open: openTagsModal, close: closeTagsModal }] =
+    useDisclosure(false);
+
   const resetSong = () => {
     setSong(JSON.parse(JSON.stringify(getSongById(id)!)));
   };
 
-  const updateSong = (updatedSong: Partial<Song>) => {
-    setSong((prevSong) => ({
-      ...prevSong,
-      ...updatedSong,
-    }));
+  const updateSong = (
+    updatedSong: Partial<Song>,
+    forcedUpdateStore = false
+  ) => {
+    setSong((prevSong) => {
+      if (forcedUpdateStore) {
+        updateSongStore(id, {
+          ...prevSong,
+          ...updatedSong,
+        });
+      }
+      return {
+        ...prevSong,
+        ...updatedSong,
+      };
+    });
   };
 
   const deleteNote = (note: Partial<Note>) => {
@@ -203,6 +217,7 @@ export function useMidiEditorManager({ id }: { id: string }) {
     addNewTrackModalOpened,
     editNoteModalOpened,
     noteListOpened,
+    tagsModalOpened,
     player,
     gridRef,
     currentNote,
@@ -213,6 +228,8 @@ export function useMidiEditorManager({ id }: { id: string }) {
     closeEditNoteModal,
     openNoteListModal,
     closeNoteListModal,
+    openTagsModal,
+    closeTagsModal,
     updateSong,
     deleteNote,
     openUpdateNoteModal,

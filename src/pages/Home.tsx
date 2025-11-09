@@ -8,12 +8,14 @@ import { useNavigate } from "react-router";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { Song } from "../definitions";
+import { SongFilter } from "../components/song/SongFilter";
 
 export const Home = () => {
   const navigate = useNavigate();
   const { addSong, overwriteSong, getSongById } = useMidiEditorStore();
   const [opened, { open, close }] = useDisclosure();
   const [jsonSong, setJsonSong] = useState<Song | null>(null);
+  const [filter, setFilter] = useState("");
 
   const handleAddSong = () => {
     const id = v4();
@@ -87,15 +89,13 @@ export const Home = () => {
         <div className="flex justify-between">
           <Title order={3}>Your Songs</Title>
           <div className="flex gap-2 lg:gap-4">
-            <Button
-              size="xs"
-              leftSection={<IconPlus />}
-              onClick={handleAddSong}
-            >
-              Add New Song
+            <div className="flex-1 hidden md:block">
+              <SongFilter filter={filter} setFilter={setFilter} />
+            </div>
+            <Button leftSection={<IconPlus />} onClick={handleAddSong}>
+              New Song
             </Button>
             <Button
-              size="xs"
               color="green"
               leftSection={<IconFileImport />}
               onClick={handleImport}
@@ -104,7 +104,10 @@ export const Home = () => {
             </Button>
           </div>
         </div>
-        <SongList />
+        <div className="block md:hidden">
+          <SongFilter filter={filter} setFilter={setFilter} />
+        </div>
+        <SongList filter={filter} />
         <Modal
           opened={opened}
           onClose={close}

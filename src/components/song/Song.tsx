@@ -33,6 +33,16 @@ export function Song(props: SongProp) {
           {props.description || "No Description"}
         </Title>
         <Title order={4}>Duration: {props.totalDuration} seconds</Title>
+        <div className="flex gap-2 flex-wrap">
+          {props.tags?.map((tag) => (
+            <div
+              key={tag}
+              className="py-1 px-2 bg-yellow-800 rounded-md text-sm text-white"
+            >
+              {tag}
+            </div>
+          ))}
+        </div>
       </div>
       <Modal
         opened={opened}

@@ -7,6 +7,7 @@ import { NoteList } from "./NoteList";
 import { MidiEditorProvider } from "./providers/MidiEditorProvider";
 import { SongDesc } from "./SongDesc";
 import { SongTitle } from "./SongTitle";
+import { SongTagsModal } from "./SongTagsModal";
 
 export function MidiEditor(props: Song) {
   return (
@@ -26,6 +27,7 @@ export function MidiEditor(props: Song) {
         <NoteList />
         <AddNewTrackModal />
         <EditNoteModal />
+        <SongTagsModal />
       </div>
     </MidiEditorProvider>
   );
