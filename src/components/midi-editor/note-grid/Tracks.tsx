@@ -74,7 +74,7 @@ function TracksEle() {
                 key={label}
                 id={label}
                 track={index + 1}
-                title={label}
+                title={label as TrackTitle}
                 notes={notes(index + 1)}
               />
             ))}

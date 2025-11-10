@@ -7,8 +7,10 @@ import { v4 } from "uuid";
 import { useNavigate } from "react-router";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
-import { Song } from "../definitions";
+import { Song, SongSchema } from "../definitions";
 import { SongFilter } from "../components/song/SongFilter";
+import { notifications } from "@mantine/notifications";
+import { uniq } from "lodash";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -48,15 +50,32 @@ export const Home = () => {
       reader.onload = (e) => {
         try {
           const json = JSON.parse(e.target?.result as string);
-          if (!isDuplicateSong(json.id)) {
-            addSong(json);
+          const { success, data: song } = SongSchema.safeParse(json);
+          if (
+            !success ||
+            song?.trackLabels.length !== uniq(song.trackLabels).length
+          ) {
+            notifications.show({
+              title: "Import Song Failed",
+              message: "The file you are importing is not a valid song file.",
+              color: "red",
+              position: "top-right",
+            });
+            return;
+          }
+          if (!isDuplicateSong(song.id)) {
+            addSong(song);
             return;
           }
           open();
-          setJsonSong(json);
+          setJsonSong(song);
         } catch (error) {
-          console.error("Invalid JSON file:", error);
-          alert("File không hợp lệ, vui lòng chọn lại!");
+          notifications.show({
+            title: "Import Song Failed",
+            message: "The file is invalid.",
+            color: "red",
+            position: "top-right",
+          });
         }
       };
 

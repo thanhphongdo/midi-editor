@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export enum TrackTitle {
   Kick = "Kick",
   Snare = "Snare",
@@ -30,24 +32,31 @@ export const TrackColor = {
   [TrackTitle.FX]: "#A61E4D",
 } as const;
 
-export type Note = {
-  track: number;
-  time: number;
-  title: TrackTitle;
-  description?: string;
-  color: string;
-};
+const TrackTitleSchema = z.string();
 
-export type Song = {
-  id: string;
-  name: string;
-  description: string;
-  totalDuration: number;
-  trackLabels: TrackTitle[];
-  notes: Note[];
-  tags?: string[];
-  isDraft?: boolean;
-};
+export const NoteSchema = z.object({
+  track: z.number(),
+  time: z.number().min(0, "Time must be >= 0"),
+  title: TrackTitleSchema,
+  description: z.string().optional(),
+  color: z.string().min(1, "Color is required"),
+});
+
+export const SongSchema = z.object({
+  id: z.string().or(z.string().min(1, "ID is required")),
+  name: z.string().min(1, "Name is required"),
+  description: z.string().default(""),
+  totalDuration: z.number().min(0, "Total duration must be >= 0"),
+  trackLabels: z
+    .array(TrackTitleSchema)
+    .min(1, "At least one track label required"),
+  notes: z.array(NoteSchema).default([]),
+  tags: z.array(z.string()).optional(),
+  isDraft: z.boolean().optional(),
+});
+
+export type Song = z.infer<typeof SongSchema>;
+export type Note = z.infer<typeof NoteSchema>;
 
 export type MidiEditor = {
   songs: Song[];
